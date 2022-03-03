@@ -1,11 +1,19 @@
 provider "aws" {
+  alias  = "us-east-1"
   region = "us-east-1"
 }
-resource "aws_instance" "vm" {
-  ami           = "ami-0e322da50e0e90e21"
-  subnet_id     = "subnet-01f1385cee60cd1d7"
-  instance_type = "t3.micro"
-  tags = {
-    Name = "my-first-tf-node"
-  }
+
+provider "aws" {
+  alias  = "us-west-2"
+  region = "us-west-2"
+}
+
+resource "aws_sns_topic" "topic-us-east" {
+  provider = aws.us-east-1
+  name     = "topic-us-east"
+}
+
+resource "aws_sns_topic" "topic-us-west" {
+  provider = aws.us-west-2
+  name     = "topic-us-west"
 }
